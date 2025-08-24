@@ -1,4 +1,8 @@
-﻿namespace SharpNEX.Engine.Platform.Windows.Rendering.GDI;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+
+namespace SharpNEX.Engine.Platform.Windows.Rendering.GDI;
 
 public class GDITexture : ITexture
 {
@@ -10,6 +14,28 @@ public class GDITexture : ITexture
     public GDITexture(string path)
     {
         _image = Image.FromFile(path);
+    }
+
+
+    public GDITexture(int width, int height, byte[] data)
+    {
+        var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+
+        var bmpData = bmp.LockBits(
+            new Rectangle(0, 0, width, height),
+            ImageLockMode.WriteOnly,
+            PixelFormat.Format32bppArgb);
+
+        try
+        {
+            Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
+        }
+        finally
+        {
+            bmp.UnlockBits(bmpData);
+        }
+
+        _image = bmp;
     }
 
     public GDITexture(Image existingImage)
