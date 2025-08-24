@@ -22,7 +22,7 @@ public class Windows : IPlatform
             throw new ArgumentException($"Renderer '{rendererType}' not found");
         }
 
-        return (IRenderer)Activator.CreateInstance(type, window)!;
+        return (IRenderer)Activator.CreateInstance(type)!;
     }
 
     public IInput CreateInput()

@@ -9,23 +9,24 @@ namespace SharpNEX.Engine.Platform.Windows
         public int Height { get; }
 
         private IntPtr _hwnd;
+        private IntPtr _hInstance;
 
         public WinWindow(string title, int width, int height)
         {
             Title = title;
             Width = width;
             Height = height;
-
             CreateWindow();
         }
-
         private void CreateWindow()
         {
+            _hInstance = Marshal.GetHINSTANCE(typeof(WinWindow).Module);
+
             WNDCLASS wc = new WNDCLASS
             {
                 lpfnWndProc = WndProcCallback,
                 lpszClassName = "SharpNEXWindowClass",
-                hInstance = Marshal.GetHINSTANCE(typeof(WinWindow).Module)
+                hInstance = _hInstance
             };
             RegisterClass(ref wc);
 
@@ -40,7 +41,10 @@ namespace SharpNEX.Engine.Platform.Windows
                 wc.hInstance,
                 IntPtr.Zero
             );
+        }
 
+        public void Show()
+        {
             ShowWindow(_hwnd, 1);
             UpdateWindow(_hwnd);
 
@@ -62,7 +66,6 @@ namespace SharpNEX.Engine.Platform.Windows
             }
             return DefWindowProc(hwnd, msg, wParam, lParam);
         }
-
 
         #region WinAPI
 
