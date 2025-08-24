@@ -16,7 +16,6 @@ public class GDITexture : ITexture
         _image = Image.FromFile(path);
     }
 
-
     public GDITexture(int width, int height, byte[] data)
     {
         var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
