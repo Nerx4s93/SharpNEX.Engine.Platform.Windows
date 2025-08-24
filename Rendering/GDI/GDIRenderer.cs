@@ -5,6 +5,7 @@ namespace SharpNEX.Engine.Platform.Windows.Rendering.GDI
 {
     internal class GDIRenderer : IWinRenderer
     {
+        private IntPtr _hwnd;
         private Graphics? _formGraphics;
         private Graphics? _bufferGraphics;
 
@@ -12,6 +13,8 @@ namespace SharpNEX.Engine.Platform.Windows.Rendering.GDI
 
         public void Init(IntPtr hwnd, int width, int height)
         {
+            _hwnd = hwnd;
+
             _buffer = new Bitmap(width, height);
 
             _formGraphics = Graphics.FromHwnd(hwnd);
@@ -25,12 +28,10 @@ namespace SharpNEX.Engine.Platform.Windows.Rendering.GDI
 
         public void EndFrame()
         {
-            var hwnd = _formGraphics!.GetHdc();
             var rect = new Rectangle();
-            GetClientRect(hwnd, ref rect);
-            _formGraphics.ReleaseHdc(hwnd);
+            GetClientRect(_hwnd, ref rect);
 
-            _formGraphics.DrawImage(_buffer!, rect);
+            _formGraphics!.DrawImage(_buffer!, rect);
         }
 
 
