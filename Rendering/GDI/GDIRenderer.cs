@@ -28,10 +28,16 @@ namespace SharpNEX.Engine.Platform.Windows.Rendering.GDI
 
         public void EndFrame()
         {
-            var rect = new Rectangle();
-            GetClientRect(_hwnd, ref rect);
+            _formGraphics = Graphics.FromHwnd(_hwnd);
 
-            _formGraphics!.DrawImage(_buffer!, rect);
+            GetClientRect(_hwnd, out Rect rect);
+
+            var width = rect.Right - rect.Left;
+            var height = rect.Bottom - rect.Top;
+
+            var destRect = new Rectangle(0, 0, width, height);
+
+            _formGraphics!.DrawImage(_buffer!, destRect);
         }
 
 
@@ -67,7 +73,16 @@ namespace SharpNEX.Engine.Platform.Windows.Rendering.GDI
         #region Import
 
         [DllImport("user32.dll")]
-        public static extern bool GetClientRect(IntPtr hWnd, ref Rectangle rect);
+        private static extern bool GetClientRect(IntPtr hWnd, out Rect lpRect);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Rect
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
 
         #endregion
     }
