@@ -4,11 +4,11 @@ namespace SharpNEX.Engine.Platform.Windows
 {
     internal class WinWindow : IWindow
     {
+        public IntPtr Hwnd { get; private set; }
         public string Title { get; set; }
         public int Width { get; }
         public int Height { get; }
 
-        private IntPtr _hwnd;
         private IntPtr _hInstance;
 
         public WinWindow(string title, int width, int height)
@@ -30,7 +30,7 @@ namespace SharpNEX.Engine.Platform.Windows
             };
             RegisterClass(ref wc);
 
-            _hwnd = CreateWindowEx(
+            Hwnd = CreateWindowEx(
                 0,
                 wc.lpszClassName,
                 Title,
@@ -45,8 +45,8 @@ namespace SharpNEX.Engine.Platform.Windows
 
         public void Show()
         {
-            ShowWindow(_hwnd, 1);
-            UpdateWindow(_hwnd);
+            ShowWindow(Hwnd, 1);
+            UpdateWindow(Hwnd);
 
             while (GetMessage(out var msg, IntPtr.Zero, 0, 0))
             {
