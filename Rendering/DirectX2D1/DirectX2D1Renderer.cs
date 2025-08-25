@@ -5,7 +5,7 @@ using SharpNEX.Engine.Platform.Windows.Rendering.DirectX2D1.Exception;
 
 namespace SharpNEX.Engine.Platform.Windows.Rendering.DirectX2D1;
 
-public class DirectX2D1Renderer : IRenderer
+public class DirectX2D1Renderer : IWinRenderer
 {
     private static WindowRenderTarget? _renderTarget;
 
