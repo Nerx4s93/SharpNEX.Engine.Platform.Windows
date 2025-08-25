@@ -7,7 +7,9 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+		<PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+		<PackageReference Include="System.Drawing.Common" Version="9.0.8" />
 		<ProjectReference Include="..\SharpNEX.Engine\SharpNEX.Engine.csproj" />
 	</ItemGroup>
 </Project>
